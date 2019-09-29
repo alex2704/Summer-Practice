@@ -69,3 +69,10 @@ body{
 	cursor: pointer;
 	border-radius: 5px;
 }
+.btn-a-login{
+	display: block!important;
+	margin-top: 10px!important;
+	width: 50%;
+	text-align: left!important;
+	color: #03A9F4!important;
+}
