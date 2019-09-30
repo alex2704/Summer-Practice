@@ -11,10 +11,11 @@
 	<?php
 	require_once('connect.php');
 	session_start();
+	$var_val = 2;
 	?>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<nav class="navbar navbar-expand-lg navbar-light nav-color">
 		<a class="navbar-brand" href="#">
-			<?php echo $_SESSION['username'];?>
+			@<?php echo $_SESSION['username'];?>
 		</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
@@ -22,22 +23,11 @@
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a class="nav-link  exit-btn" href="#">Главная</a>
+				</li>
 				<li class="nav-item active">
 					<a class="nav-link exit-btn" href="ask.php">Задать вопрос <span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#">Link</a>
-				</li>
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Dropdown
-					</a>
-					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="#">Action</a>
-						<a class="dropdown-item" href="#">Another action</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#">Something else here</a>
-					</div>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link  exit-btn" href="logout.php">Выход</a>
@@ -54,18 +44,18 @@
 		<div class="col-lg-2 col-md-2"></div>
 		<div class="row col-lg-8 col-md-8">
 			<div class='col-lg-2 col-md-2 bd-question-list name-bd-question-list'>Имя пользователя</div>
-			<div class='col-lg-2 col-md-2 bd-question-list name-bd-question-list'>Вопрос</div>
+			<div class='col-lg-4 col-md-2 bd-question-list name-bd-question-list'>Вопрос</div>
 			<div class='col-lg-2 col-md-2 bd-question-list name-bd-question-list'>Дата</div>
-			<div class='col-lg-2 col-md-2 bd-question-list name-bd-question-list'>Актуальность</div>
-			<div class='col-lg-2 col-md-2 bd-question-list name-bd-question-list'>Рейтинг</div>
+			<div class='col-lg-1 col-md-2 bd-question-list name-bd-question-list'>Статус</div>
+			<div class='col-lg-1 col-md-2 bd-question-list name-bd-question-list'>Рейтинг</div>
 			<div class='col-lg-2 col-md-2 bd-question-list name-bd-question-list'></div>
 			<?php
 			$query = "SELECT * FROM questions";
 			$result = mysqli_query($connection, $query) or die(mysqli_error($connection));
 			while($row = mysqli_fetch_array($result)){
+				$id = $row['id'];
 				$name=$row['user'];
 				$header = $row['header'];
-				$content = $row['content'];
 				$date = $row['date_question'];
 				$status = $row['status'];
 				$rating = $row['rating'];
@@ -75,15 +65,15 @@
 					$isactive = 'закрыт';
 				}
 				if($rating == "" or $rating == 0){
-					$rating = "никто не оценил";
+					$rating = "-";
 				}
 				echo "
 				<div class='col-lg-2 col-md-2 bd-question-list'>$name</div>
-				<div class='col-lg-2 col-md-2 bd-question-list'><a href='answer.php'>$header</a></div>
+				<div class='col-lg-4 col-md-4 bd-question-list'><a href='answer.php?num=$id'>$header</a></div>
 				<div class='col-lg-2 col-md-2 bd-question-list'>$date</div>
-				<div class='col-lg-2 col-md-2 bd-question-list'>$isactive</div>
-				<div class='col-lg-2 col-md-2 bd-question-list'>$rating</div>
-				<div class='col-lg-2 col-md-2 bd-question-list'><a href='answer.php'>Ответить</a></div>";
+				<div class='col-lg-1 col-md-1 bd-question-list'>$isactive</div>
+				<div class='col-lg-1 col-md-1 bd-question-list'>$rating</div>
+				<div class='col-lg-2 col-md-2 bd-question-list'><a href='answer.php?num=$id'>Ответить</a></div>";
 			}
 			?>
 		</div>
