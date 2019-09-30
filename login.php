@@ -47,6 +47,7 @@ if (isset($_SESSION['username'])){
 	echo "Привет" . $username . "";
 	echo "Вы вошли";
 	echo "<a href='logout.php' class='btn btn-lg btn-primary' > Logout </a>";
+	header('Location: start_page.php');
 }
 ?>
 </body>

@@ -7,23 +7,40 @@
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 </head>
 <body>
-<?php
-require('connect.php');
+	<?php
+	require('connect.php');
 
-if(isset($_POST['username']) and isset($_POST['password'])){
-	$username = $_POST['username'];
-	$password = $_POST['password'];
+	if(isset($_POST['username']) and isset($_POST['password'])){
+		$username = $_POST['username'];
+		$password = $_POST['password'];
 
-	$query = "INSERT INTO users (username, password) VALUES ('$username','$password')";
-	$result = mysqli_query($connection, $query);
+		$query = "INSERT INTO users (username, password) VALUES ('$username','$password')";
+		$result = mysqli_query($connection, $query);
 
-	if($result){
-		$smsg = "Регистрация прошла успешно";
-	} else{
-		$fsmsg = "Ошибка";
+		if($result){
+			$smsg = "Регистрация прошла успешно";
+			if(isset($smsg)){
+				session_start();
+				$_SESSION['username'] = $username;
+				if (isset($_SESSION['username'])){
+					$username = $_SESSION['username'];
+					echo "Привет" . $username . "";
+					echo "Вы вошли";
+					echo "<a href='logout.php' class='btn btn-lg btn-primary' > Logout </a>";
+					header('Location: start_page.php');
+				}
+				else{
+					$fsmsg = "Что-то пошло не так, попробуйте войти через страницу авторизации";
+				}
+			}
+			else{
+					$fsmsg = "Что-то пошло не так, попробуйте войти через страницу авторизации";
+				}
+		} else{
+			$fsmsg = "Ошибка";
+		}
 	}
-}
-?>
+	?>
 	<div class="log-box">
 		<h2>Регистрация</h2>
 		<?php if(isset($smsg)){ ?><div class="alert alert-success" role="alert"><?php echo $smsg; ?></div><?php } ?>
