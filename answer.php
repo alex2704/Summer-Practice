@@ -11,6 +11,16 @@
 	<?php
 	require_once('connect.php');
 	session_start();
+	function CheckRatingStatus($id_q, $username, $connection){
+		$query = "SELECT * FROM rating_status WHERE id_rating='$id_q' AND username='$username'";
+		$result = mysqli_query($connection, $query) or die(mysqli_error($connection));
+		if(mysqli_num_rows($result)==0){
+			return 'enabled';
+		}
+		else{
+			return 'disabled';
+		}
+	}
 	$id_question = $_GET['num'];
 	$query = "SELECT * FROM questions WHERE id='$id_question'";
 	$result = mysqli_query($connection, $query) or die(mysqli_error($connection));
@@ -46,6 +56,11 @@
 		$up = $rating + 1;
 		$query = "UPDATE questions SET rating = $up WHERE id=$id_question";
 		$result = mysqli_query($connection, $query);
+		$id_rating = $id_question;
+		$username_current = $_SESSION['username'];
+		$status_rating = 1;
+		$query_rating = "INSERT INTO rating_status (id_rating, username, status_rating) VALUES ('$id_rating','$username_current', '$status_rating')";
+		$result_rating = mysqli_query($connection, $query_rating);
 		header('Refresh:0');
 	}
 	if(isset($_POST['close_id'])){
@@ -55,9 +70,9 @@
 	}
 	if(isset($_POST['content_answer'])){
 		$answer = $_POST['content_answer'];
-		$user = $_SESSION['username'];
+		$user_answer = $_SESSION['username'];
 		$date_answer = date("Y-m-d H-i-s");
-		$query = "INSERT INTO answers (user, id_question, answer, date_answer) VALUES ('$user', $id_question, '$answer', '$date_answer')";
+		$query = "INSERT INTO answers (user, id_question, answer, date_answer) VALUES ('$user_answer', $id_question, '$answer', '$date_answer')";
 		$result = mysqli_query($connection, $query);
 	}
 	?>
@@ -88,9 +103,10 @@
 		<h2 class="h2-class"><?php echo $header ?></h2>
 		<span class="description-question">Спросил: <?php echo $user; echo" ".$status_q." ".$date;?></span>
 		<span class="rating-question description-question"><?php echo "Текущий рейтинг вопроса: ".$rating;
+		$property_status = CheckRatingStatus($id_question, $_SESSION['username'], $connection);
 		if($_SESSION['username'] != $user and $status == 1){
 			echo "<form method='POST'>
-			<input type='submit' name='up-rating' value='Поднять рейтинг вопроса'class='btn btn-secondary btn-up-rating'></input>
+			<input type='submit' name='up-rating' value='Поднять рейтинг вопроса'class='btn btn-secondary btn-up-rating' $property_status></input>
 			</form>";
 		}
 		?></span>

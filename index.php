@@ -24,9 +24,6 @@
 				$_SESSION['username'] = $username;
 				if (isset($_SESSION['username'])){
 					$username = $_SESSION['username'];
-					echo "Привет" . $username . "";
-					echo "Вы вошли";
-					echo "<a href='logout.php' class='btn btn-lg btn-primary' > Logout </a>";
 					header('Location: start_page.php');
 				}
 				else{
@@ -37,7 +34,7 @@
 					$fsmsg = "Что-то пошло не так, попробуйте войти через страницу авторизации";
 				}
 		} else{
-			$fsmsg = "Ошибка";
+			$fsmsg = "Текущее имя пользователя занято";
 		}
 	}
 	?>
