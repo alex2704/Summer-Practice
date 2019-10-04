@@ -13,6 +13,7 @@
 	session_start();
 	$var_val = 2;
 	?>
+	<?php if( isset($_SESSION['username']) ) : ?>
 	<nav class="navbar navbar-expand-lg navbar-light nav-color">
 		<a class="navbar-brand" href="#">
 			@<?php echo $_SESSION['username'];?>
@@ -76,6 +77,8 @@
 		<div class="col-lg-2 col-md-2"></div>
 		</div>
 	</article>
+	<?php else: header('Location: index.php');?>
+<?php endif; ?>
 </body>
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/bootstrap.js"></script>

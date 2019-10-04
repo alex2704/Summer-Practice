@@ -76,6 +76,7 @@
 		$result = mysqli_query($connection, $query);
 	}
 	?>
+	<?php if( isset($_SESSION['username']) ) : ?>
 	<nav class="navbar navbar-expand-lg navbar-light nav-color">
 		<a class="navbar-brand" href="start_page.php">
 			@<?php echo $_SESSION['username'];?>
@@ -90,7 +91,7 @@
 					<a class="nav-link  exit-btn" href="start_page.php">Главная</a>
 				</li>
 				<li class="nav-item active">
-					<a class="nav-link exit-btn disabled" href="#">Задать вопрос <span class="sr-only">(current)</span></a>
+					<a class="nav-link exit-btn" href="#">Задать вопрос <span class="sr-only">(current)</span></a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link  exit-btn" href="logout.php">Выход</a>
@@ -157,6 +158,8 @@
 			?>
 	</article>
 	</div>
+<?php else: header('Location: index.php');?>
+<?php endif; ?>
 </body>
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/bootstrap.js"></script>

@@ -29,6 +29,7 @@
 		}
 	}
 	?>
+	<?php if( isset($_SESSION['username']) ) : ?>
 	<nav class="navbar navbar-expand-lg navbar-light nav-color">
 		<a class="navbar-brand" href="start_page.php">
 			@<?php echo $_SESSION['username'];?>
@@ -66,6 +67,8 @@
 			<input type="submit" name="" value="Опубликовать вопрос" class="ask_btn btn btn-lg btn-primary">
 		</form>
 	</article>
+	<?php else: header('Location: index.php');?>
+<?php endif; ?>
 </body>
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/bootstrap.js"></script>
