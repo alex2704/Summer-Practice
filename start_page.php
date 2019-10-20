@@ -12,6 +12,15 @@
 	require_once('connect.php');
 	session_start();
 	$var_val = 2;
+	if(isset($_POST['delete_id']) and $_SESSION['username'] == 'admin'){
+		$id_question = $_POST['delete_id'];
+		$query = "DELETE FROM questions WHERE id = $id_question";
+		$result = mysqli_query($connection, $query);
+		$query = "DELETE FROM answers WHERE id_question = $id_question";
+		$result = mysqli_query($connection, $query);
+		$query  = "DELETE FROM rating_status WHERE id_rating = $id_question";
+		$result = mysqli_query($connection, $query);
+	}
 	?>
 	<?php if( isset($_SESSION['username']) ) : ?>
 	<nav class="navbar navbar-expand-lg navbar-light nav-color">
@@ -69,8 +78,21 @@
 				<div class='col-lg-4 col-md-4 bd-question-list'><a href='answer.php?num=$id'>$header</a></div>
 				<div class='col-lg-2 col-md-2 bd-question-list'>$date</div>
 				<div class='col-lg-1 col-md-1 bd-question-list'>$isactive</div>
-				<div class='col-lg-1 col-md-1 bd-question-list'>$rating</div>
-				<div class='col-lg-2 col-md-2 bd-question-list'><a href='answer.php?num=$id'>Ответить</a></div>";
+				<div class='col-lg-1 col-md-1 bd-question-list'>$rating</div>";
+				if ($_SESSION['username'] == 'admin'){
+					echo "
+					<div class='col-lg-1 col-md-1 bd-question-list'><a href='answer.php?num=$id'>Ответить</a></div>
+					<div class='col-lg-1 col-md-1 bd-question-list'>
+					<form method='POST'>
+					<input type='hidden' name='delete_id' value='$id'>
+					<input type='submit' value='Удалить'class='btn btn-primary'></input>
+					</form>
+					</div>";
+				}
+				else{
+					echo "
+					<div class='col-lg-2 col-md-2 bd-question-list'><a href='answer.php?num=$id'>Ответить</a></div>";
+				}
 			}
 			?>
 		</div>
